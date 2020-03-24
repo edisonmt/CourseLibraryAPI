@@ -28,8 +28,16 @@ namespace CourseLibrary.API
 
             services.AddDbContext<CourseLibraryContext>(options =>
             {
-                options.UseSqlServer(
-                    @"Server=(localdb)\mssqllocaldb;Database=CourseLibraryDB;Trusted_Connection=True;");
+                //options.UseSqlServer(
+                //    @"Server=(localdb)\mssqllocaldb;
+                //    Database=CourseLibraryDB;
+                //    Trusted_Connection=True;");
+                options.UseSqlServer(@"
+                    Server = 127.0.0.1,1433;
+                    Database=CourseLibraryDB;
+                    User Id = SA;
+                    Password = Blast@123"
+                );                
             }); 
         }
 
