@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AutoMapper;
 using CourseLibrary.API.Helper;
 using CourseLibrary.API.Models;
 using CourseLibrary.API.Services;
@@ -11,31 +12,20 @@ namespace CourseLibrary.API.Controllers
     [Route("api/authors")]
     public class AuthorsController : ControllerBase
     {
-        public readonly ICourseLibraryRepository _courseLibraryRepository;
+        private readonly ICourseLibraryRepository _courseLibraryRepository;
+        private readonly IMapper _mapper;
 
-        public AuthorsController(ICourseLibraryRepository courseLibraryRepository)
+        public AuthorsController(ICourseLibraryRepository courseLibraryRepository, IMapper mapper)
         {
             _courseLibraryRepository = courseLibraryRepository ?? throw new ArgumentException(nameof(courseLibraryRepository));
+            _mapper = mapper ?? throw new ArgumentException(nameof(mapper));
         }
 
         [HttpGet()]
-        public IActionResult GetAuthors()
+        public ActionResult<IEnumerable<AuthorDto>> GetAuthors()
         {
-            var authorsFromRepo = _courseLibraryRepository.GetAuthors();
-            var authors = new List<AuthorDto>();
-
-            foreach (var author in authorsFromRepo)
-            {
-                authors.Add(new AuthorDto()
-                {
-                    Id = author.Id,
-                    Name = $"{author.FirstName} {author.LastName}",
-                    MainCategory = author.MainCategory,
-                    Age = author.DateOfBirth.GetCurrentAge()
-                });                 
-            }
-
-            return Ok(authors);
+            var authorsFromRepo = _courseLibraryRepository.GetAuthors();            
+            return Ok(_mapper.Map<IEnumerable<AuthorDto>>(authorsFromRepo));
         }
 
         [HttpGet("{authorId}")]
@@ -47,7 +37,7 @@ namespace CourseLibrary.API.Controllers
                 return NotFound();
             } 
 
-            return Ok(authorFromRepo);
+            return Ok(_mapper.Map<AuthorDto>(authorFromRepo)) ;
         }
     }
 }
