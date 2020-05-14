@@ -54,6 +54,17 @@ namespace CourseLibrary.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }else
+            {
+                // This will be returned when 500 happens on production environment
+                app.UseExceptionHandler(appBuilder =>
+                {
+                   appBuilder.Run(async (context) =>
+                   {
+                       context.Response.StatusCode = 500;
+                       await context.Response.WriteAsync("An unexpected fault happend. Try again later.");
+                   });
+                });
             }
 
             app.UseRouting();
