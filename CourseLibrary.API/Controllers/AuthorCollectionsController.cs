@@ -60,5 +60,12 @@ namespace CourseLibrary.API.Controllers
 
             return CreatedAtRoute("GetAuthorCollection", new { ids = idsAsString }, authorCollectionToReturn);
         }
+
+        [HttpOptions]
+        public IActionResult GetAuthorOptions()
+        {            
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
+            return Ok();
+        }
     } 
 }
