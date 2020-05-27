@@ -13,6 +13,7 @@
     <Folder Include="Helper\" />
     <Folder Include="Profiles\" />
     <Folder Include="ResourceParameters\" />
+    <Folder Include="ValidationAttributes\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
